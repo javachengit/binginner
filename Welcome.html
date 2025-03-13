@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hello world</title>
+    <style>
+        table,
+        td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+        }
+
+        #hrr~p {
+            color: red;
+        }
+        #content{
+            height: 800px;
+            width: 800px;
+            background-color: red;
+            /* display: flex; */
+            /* justify-content: center; */
+            /* align-items: center; */
+        }
+        .box1{
+            height: 200px;
+            width: 190px;
+            background: blue;
+            margin: 3px;
+            float: left;
+        }
+        #anim{
+            height: 500px;
+            width: 500px;
+            background-color: red;
+            animation: myAnim 1s linear 5s 3;
+        }
+        @keyframes myAnim{
+            0%{
+                background-color: red;
+            }
+            50%{
+                background-color: aqua;
+            }
+            100%{
+                background-color: red;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    开始
+    <p>段</p>
+    <p>段</p>
+    <hr id="hrr" width="400px">
+    <p>段</p>
+    <p>段</p>
+    <a href="Hello.html">点击</a>
+    <span>鸟</span><em>ni阿红</em><i>你啊</i><b>你好</b><strong>甲</strong><del>删除</del>
+    <ol type="A">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+    </ol>
+    <ul>
+        <li>
+            a
+            <ul type="circle">
+                <li>aa</li>
+                <li>aaa</li>
+            </ul>
+        </li>
+        <li>
+            b
+            <ul type="square">
+                <li>aa</li>
+                <li>aaa</li>
+            </ul>
+        </li>
+        <li>c
+            <ul type="none">
+                <li>aa</li>
+                <li>aaa</li>
+            </ul>
+        </li>
+    </ul>
+    <form action="">
+        <input>
+        <input type="submit">
+    </form>
+    <table>
+        <tr>
+            <td>单元格</td>
+            <td>单元格</td>
+            <td>单元格</td>
+        </tr>
+        <tr>
+            <td>单元格</td>
+            <td>单元格</td>
+            <td>单元格</td>
+        </tr>
+        <tr>
+            <td>单元格</td>
+            <td>单元格</td>
+            <td>单元格</td>
+        </tr>
+    </table>
+    <div id="content">
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+        <div class="box1"></div>
+    </div>
+    <div id="anim"></div>
+</body>
+
+</html>
