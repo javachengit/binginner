@@ -82,7 +82,7 @@
             border: 1px solid black;
             text-align: center;
             line-height: 40px;
-            border-radius: 14px;
+            border-radius: 10%;
             background-color: #FFD700;
             margin: 0 20%;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -131,8 +131,8 @@
         </div>
 
         <div class="button-container">
-            <div class="button one">按钮1</div>
-            <div class="button two">按钮2</div>
+            <div class="button one">不要按</div>
+            <div class="button two">这个!</div>
         </div>
     </div>
 </body>
@@ -299,7 +299,7 @@
                 position: absolute;
                 width: 3px;
                 height: 25px;
-                background: linear-gradient(to bottom, #FFD700 20%, rgba(255,215,0,0.5));
+                background: linear-gradient(to bottom, #FFD700 20%, rgba(0,0,255,0.5));
                 border-radius: 0 0 50% 50%;
                 animation: rainFall 3s linear forwards;
                 left: ${Math.random() * 90+5}%;
@@ -347,19 +347,37 @@
 
     // 按钮 1 点击事件处理函数
     function handleButtonOneClick() {
-        // 获取按钮 1 当前的缩放比例，默认为 1
-        const currentScaleOne = parseFloat(getComputedStyle(one).transform.replace(/[^0-9.-]/g, '')) || 1;
-        // 计算按钮 1 新的缩放比例，缩小为原来的 0.8
-        const newScaleOne = currentScaleOne * 0.8;
-        // 设置按钮 1 的缩放比例
-        one.style.transform = `scale(${newScaleOne})`;
+        // 获取按钮 1 当前的宽高和字体大小
+        const currentWidthOne = one.offsetWidth;
+        const currentHeightOne = one.offsetHeight;
+        const currentFontSizeOne = parseFloat(getComputedStyle(one).fontSize);
+        
+        // 计算按钮 1 新的宽高和字体大小，缩小为原来的 0.8
+        const newWidthOne = currentWidthOne * 0.8;
+        const newHeightOne = currentHeightOne * 0.8;
+        const newFontSizeOne = currentFontSizeOne * 0.8;
+        
+        // 应用按钮 1 的新样式
+        one.style.width = `${newWidthOne}px`;
+        one.style.height = `${newHeightOne}px`;
+        one.style.fontSize = `${newFontSizeOne}px`;
+        one.style.lineHeight = `${newHeightOne}px`; // 保持垂直居中
 
-        // 获取按钮 2 当前的缩放比例，默认为 1
-        const currentScaleTwo = parseFloat(getComputedStyle(two).transform.replace(/[^0-9.-]/g, '')) || 1;
-        // 计算按钮 2 新的缩放比例，放大为原来的 1.25 倍
-        const newScaleTwo = currentScaleTwo * 1.25;
-        // 设置按钮 2 的缩放比例
-        two.style.transform = `scale(${newScaleTwo})`;
+        // 获取按钮 2 当前的宽高和字体大小
+        const currentWidthTwo = two.offsetWidth;
+        const currentHeightTwo = two.offsetHeight;
+        const currentFontSizeTwo = parseFloat(getComputedStyle(two).fontSize);
+        
+        // 计算按钮 2 新的宽高和字体大小，放大为原来的 1.25 倍
+        const newWidthTwo = currentWidthTwo * 1.25;
+        const newHeightTwo = currentHeightTwo * 1.25;
+        const newFontSizeTwo = currentFontSizeTwo * 1.25;
+        
+        // 应用按钮 2 的新样式
+        two.style.width = `${newWidthTwo}px`;
+        two.style.height = `${newHeightTwo}px`;
+        two.style.fontSize = `${newFontSizeTwo}px`;
+        two.style.lineHeight = `${newHeightTwo}px`; // 保持垂直居中
     }
 
     // 事件监听
