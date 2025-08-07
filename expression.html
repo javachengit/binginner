@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>expression</title>
+    <style>
+        .box {
+            background-color: white;
+            position: relative;  /* 新增定位上下文 */
+            overflow: hidden;  /* 新增隐藏溢出 */
+        }
+
+        .emoji-container {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #FFD700;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 200px auto;
+            font-size: 60px;
+        }
+
+        .face {
+            position: relative;
+            display: flex;
+            gap: 40px;
+            top: -10%;
+        }
+
+        .eye {
+            width: 35px;
+            height: 35px;
+            background-color: #fff;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .mouth {
+            width: 40px;
+            height: 30px;
+            /* border: 2px solid #000; */
+            /* border-top: none; */
+            border-radius: 10px 10px 45px 45px;
+            position: absolute;
+            background-color: rgb(77, 46, 9);
+            top: 50px;
+            left: 35px;
+            overflow: hidden;
+        }
+
+        .tooth{
+            width: 10px;
+            height: 7px;
+            background-color: #fff;
+            position: absolute;
+            top: 0px;
+            border-radius: 0 0px 10px 10px;
+        }
+
+        .ball {
+            width: 15px;
+            height: 15px;
+            background-color: #000;
+            border-radius: 50%;
+            position: absolute;
+            top: 28.5%;
+            left: 28.5%;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .button {
+            height: 40px;
+            width: 70px;
+            border: 1px solid black;
+            text-align: center;
+            line-height: 40px;
+            border-radius: 14px;
+            background-color: #FFD700;
+            margin: 0 20%;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .button:hover {
+            cursor: pointer;
+            background-color: #ebdb22;
+        }
+
+        .left {
+            left: 20%;
+        }
+        .right {
+            right: 20%;
+        }
+
+        .tongue {
+            width: 30px;
+            height: 14px;
+            background-color: #b86565;
+            position: absolute;
+            bottom: 0px;
+            left: 10%;
+            border-radius: 10px 10px 0px 0px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="box">
+        <div class="emoji-container">
+            <div class="face">
+                <div class="eye">
+                    <div class="ball"></div>
+                </div>
+                <div class="eye">
+                    <div class="ball"></div>
+                </div>
+                <div class="mouth">
+                    <div class="tooth left"></div>
+                    <div class="tooth right"></div>
+                    <div class="tongue"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button-container">
+            <div class="button one">按钮1</div>
+            <div class="button two">按钮2</div>
+        </div>
+    </div>
+</body>
+<script>
+    // 元素获取
+    const box = document.querySelector(".box");
+    const eyes = document.querySelectorAll('.eye');
+    const mouth = document.querySelector('.mouth');
+    const emojiContainer = document.querySelector('.emoji-container');
+    const one = document.querySelector(".one");
+    const two = document.querySelector(".two");
+    const buttonContainer = document.querySelector(".button-container");
+    const left = document.querySelector(".left");
+    const right = document.querySelector(".right");
+
+    // 函数定义
+    // 定义初始化函数
+    function initialize() {
+        eyes.forEach(eye => {
+            const pupil = eye.querySelector('.ball');
+            // 重置眼球位置
+            pupil.style.transform = 'translate(0, 0)';
+            // 重置眼睛大小
+            eye.style.width = '35px';
+            eye.style.height = '35px';
+            // eye.style.backgroundColor = '#fff';
+        });
+
+        // 重置嘴巴圆角
+        mouth.style.borderRadius = '10px 10px 45px 45px';
+        mouth.style.width = '40px';
+        mouth.style.height = '30px';
+        mouth.style.top = '50px';
+        mouth.style.left = '35px';
+        mouth.style.backgroundColor = 'rgb(77, 46, 9)';
+
+        // 重置背景颜色
+        emojiContainer.style.backgroundColor = '#FFD700';
+    }
+
+    //鼠标移动函数
+    const handleMouseMove = function (e) {
+        eyes.forEach(eye => {
+            const pupil = eye.querySelector('.ball');
+            const eyeRect = eye.getBoundingClientRect();
+            const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+            const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+            // 计算鼠标相对于眼睛中心的位置
+            let dx = e.clientX - eyeCenterX;
+            let dy = e.clientY - eyeCenterY;
+
+            // 计算鼠标与眼睛中心的距离
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // 计算最大移动距离（眼球半径）
+            const maxDistance = (eyeRect.width - pupil.offsetWidth) / 2;  // 留一点余量
+
+            // 如果距离不为0，计算新位置
+            if (distance > 0) {
+                // 如果距离超过最大移动距离，则缩放dx和dy
+                if (distance > maxDistance) {
+                    dx = dx * maxDistance / distance;
+                    dy = dy * maxDistance / distance;
+                }
+
+                // 设置眼球位置
+                pupil.style.transform = `translate(calc(${dx}px), calc(${dy}px))`;
+            }
+        });
+
+        //设置嘴巴
+        const centerx = two.getBoundingClientRect().x - one.getBoundingClientRect().x;
+        const rightx = (e.clientX - one.getBoundingClientRect().x) / centerx;
+        const bottomRadius = (rightx * 45)<10?10:rightx*45;
+        const a = (55 - bottomRadius)>10?55-bottomRadius:10;
+
+        mouth.style.height = `${30-bottomRadius/20}px`;
+        mouth.style.borderRadius = `${a}px ${a}px ${bottomRadius}px ${bottomRadius}px`;
+
+        // 计算鼠标位置相对于两个按钮的比例，限定在 0 到 1 之间
+        const ratio = Math.min(Math.max((e.clientX - one.getBoundingClientRect().x) / centerx, 0), 1);
+        // 原始颜色 #FFD700 的 RGB 值
+        const originalRed = 255;
+        const originalGreen = 215;
+        const originalBlue = 0;
+
+        // 根据比例计算新的颜色值
+        const red = Math.round(105 * (1 - ratio) + originalRed * ratio);
+        const green = Math.round(150 * (1 - ratio) + originalGreen * ratio);
+        const blue = Math.round(0 * (1 - ratio) + originalBlue * ratio);
+        
+        // 设置背景颜色
+        emojiContainer.style.background = `linear-gradient(to bottom , rgb(${red}, ${green}, ${blue}), #FFD700)`;
+    };
+
+    // 生成随机颜色
+    function getRandomColor() {
+        const letters = '0123456789ABCDEF';
+        let color = '#';
+        for (let i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+    // 面部扭曲函数
+    function distortFace() {
+        // 扭曲眼睛
+        eyes.forEach((eye, index) => {
+            const pupil = eye.querySelector('.ball');
+            // 随机改变眼球位置
+            const randomX = Math.random() * 20 - 10;
+            const randomY = Math.random() * 20 - 10;
+            pupil.style.transform = `translate(${randomX}px, ${randomY}px)`;
+
+            // 随机改变眼睛大小
+            const randomWidth = Math.random() * 20 + 20;
+            const randomHeight = Math.random() * 20 + 20;
+            eye.style.width = `${randomWidth}px`;
+            eye.style.height = `${randomHeight}px`;
+
+            // 随机改变眼睛颜色
+            eye.style.backgroundColor = getRandomColor();
+        });
+
+        // 扭曲嘴巴
+        const randomWidth = Math.random() * 30 + 20;
+        const randomHeight = Math.random() * 20 + 10;
+        mouth.style.width = `${randomWidth}px`;
+        mouth.style.height = `${randomHeight}px`;
+        mouth.style.borderRadius = `${Math.random() * 30}px`;
+        mouth.style.top = `${Math.random() * 20 + 40}px`;
+        mouth.style.left = `${Math.random() * 20 + 30}px`;
+        // 随机改变嘴巴颜色
+        mouth.style.backgroundColor = getRandomColor();
+    }
+
+    // 封装点击事件处理函数
+    function handleClick() {
+        document.removeEventListener('mousemove', handleMouseMove);
+
+        // 每 100 毫秒扭曲一次面部
+        const distortInterval = setInterval(distortFace, 100);
+
+        // 3 秒后停止扭曲并恢复初始状态
+        setTimeout(() => {
+            // 随机选择隐藏左侧或右侧牙齿
+            const randomSide = Math.random() < 0.5 ? left : right;
+            randomSide.style.display = 'none';
+            clearInterval(distortInterval);
+            initialize();
+            document.addEventListener('mousemove', handleMouseMove);
+        }, 3000);
+    }
+
+    // 新增雨滴效果函数
+    function createRain() {
+        const rainCount = 200;
+        
+        for (let i = 0; i < rainCount; i++) {
+            const drop = document.createElement('div');
+            drop.style.cssText = `
+                position: absolute;
+                width: 3px;
+                height: 25px;
+                background: linear-gradient(to bottom, #FFD700 20%, rgba(255,215,0,0.5));
+                border-radius: 0 0 50% 50%;
+                animation: rainFall 3s linear forwards;
+                left: ${Math.random() * 90+5}%;
+                top: -${Math.random() * 1000}px;
+                transform: rotate(15deg);
+                opacity: ${Math.random() * 0.6 + 0.4};
+                filter: blur(${Math.random()}px);
+            `;
+            
+            box.appendChild(drop);
+            
+            setTimeout(() => drop.remove(), 3000);
+        }
+    }
+
+    // 新增雨滴动画
+    const style = document.createElement('style');
+    style.textContent = `
+    @keyframes rainFall {
+        0% { 
+            transform: translateY(0) rotate(15deg);
+            opacity: 0.8; 
+        }
+        100% { 
+            transform: translateY(150vh) rotate(15deg);
+            opacity: 0.2;
+        }
+    }
+    `;
+    document.head.appendChild(style);
+
+    //鼠标移入按钮2 初始化表情
+    function handleMouseEnter() {
+        initialize();
+        eyes.forEach(eye => {
+            eye.style.backgroundColor = '#fff';
+        });
+    }
+
+    // 按钮 2 点击事件处理函数
+    function handleButtonTwoClick() {
+        // buttonContainer.style.display = 'none';
+        window.location.href = "planet.html";
+    }
+
+    // 按钮 1 点击事件处理函数
+    function handleButtonOneClick() {
+        // 获取按钮 1 当前的缩放比例，默认为 1
+        const currentScaleOne = parseFloat(getComputedStyle(one).transform.replace(/[^0-9.-]/g, '')) || 1;
+        // 计算按钮 1 新的缩放比例，缩小为原来的 0.8
+        const newScaleOne = currentScaleOne * 0.8;
+        // 设置按钮 1 的缩放比例
+        one.style.transform = `scale(${newScaleOne})`;
+
+        // 获取按钮 2 当前的缩放比例，默认为 1
+        const currentScaleTwo = parseFloat(getComputedStyle(two).transform.replace(/[^0-9.-]/g, '')) || 1;
+        // 计算按钮 2 新的缩放比例，放大为原来的 1.25 倍
+        const newScaleTwo = currentScaleTwo * 1.25;
+        // 设置按钮 2 的缩放比例
+        two.style.transform = `scale(${newScaleTwo})`;
+    }
+
+    // 事件监听
+    // 页面加载时初始化
+    window.addEventListener('load', initialize);
+    // 添加 mousemove 事件监听器
+    document.addEventListener('mousemove', handleMouseMove);
+    // 绑定点击事件
+    emojiContainer.addEventListener('click', handleClick);
+    // 绑定鼠标移入按钮 1 事件
+    one.addEventListener("mouseenter", createRain);
+    // 绑定鼠标移入按钮 2 事件
+    two.addEventListener("mouseenter", handleMouseEnter);
+    // 绑定按钮 1 的点击事件
+    one.addEventListener('click', handleButtonOneClick);
+    // 绑定按钮 2 的点击事件
+    two.addEventListener('click', handleButtonTwoClick);
+</script>
+
+</html>
